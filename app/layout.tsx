@@ -4,6 +4,7 @@ import './globals.css';
 import React from 'react';
 import LightRays from '@/components/ui/LightRays';
 import Navbar from '@/components/Navbar';
+import { PostHogProvider } from '@/app/providers';
 
 const schibstedGrotesk = Schibsted_Grotesk({
   variable: '--font-schibsted-grotesk',
@@ -44,7 +45,9 @@ export default function RootLayout({
             distortion={0.01}
           />
         </div>
-        <main>{children}</main>
+        <main>
+          <PostHogProvider>{children}</PostHogProvider>
+        </main>
       </body>
     </html>
   );
