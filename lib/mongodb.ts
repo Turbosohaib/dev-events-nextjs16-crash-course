@@ -14,13 +14,6 @@ declare global {
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-// Validate that the MONGODB_URI environment variable is defined
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local'
-  );
-}
-
 // Initialize the cached connection object
 // In development, use a global variable to preserve the connection across hot reloads
 // In production, the connection is created fresh for each serverless function invocation
@@ -49,6 +42,13 @@ async function connectDB(): Promise<typeof mongoose> {
 
   // If a connection promise doesn't exist, create a new one
   if (!cached.promise) {
+    // Validate that the MONGODB_URI environment variable is defined
+    if (!MONGODB_URI) {
+      throw new Error(
+        'Please define the MONGODB_URI environment variable inside .env.local'
+      );
+    }
+
     const opts = {
       bufferCommands: false, // Disable command buffering for better error handling
     };
@@ -57,6 +57,8 @@ async function connectDB(): Promise<typeof mongoose> {
       return mongoose;
     });
   }
+
+
 
   try {
     // Wait for the connection promise to resolve
